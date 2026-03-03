@@ -88,7 +88,7 @@
             "id": 13,
             "name": "Chicken Wings (6 pcs)",
             "price": 380.0,
-            "quantity": -1,
+            "quantity": 0,
             "category": ""
         },
         {
