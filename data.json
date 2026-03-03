@@ -18,7 +18,7 @@
             "id": 3,
             "name": "BBQ Chicken Pizza",
             "price": 520.0,
-            "quantity": -1,
+            "quantity": 0,
             "category": ""
         },
         {
@@ -88,7 +88,7 @@
             "id": 13,
             "name": "Chicken Wings (6 pcs)",
             "price": 380.0,
-            "quantity": 0,
+            "quantity": -1,
             "category": ""
         },
         {
@@ -116,7 +116,7 @@
             "id": 17,
             "name": "Coke (500ml)",
             "price": 60.0,
-            "quantity": -2,
+            "quantity": 0,
             "category": ""
         },
         {

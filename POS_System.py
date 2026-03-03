@@ -1,12 +1,154 @@
 import json
 import random
 import sys
+import time
+import os
 from datetime import datetime
 from pathlib import Path
 
+# Get the folder where the script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Food menu
 DATA_FILE = Path("data.json")
 CATEGORY_ORDER = ["Food", "Soft Drinks", "Pasta", "Desserts"]
 
+# Builds accounts file path in the same folders as the script
+ACCOUNTS = os.path.join(SCRIPT_DIR, "accounts.txt")
+
+def checkUsername(user):
+    sameUsername = False
+    with open(ACCOUNTS, "r") as f: # Open accounts file:
+        lines = f.readlines()
+
+    for line in lines:
+        # Get each usernames
+        prevUsername = line.split(",")
+        if prevUsername[0] == user:
+            prevUsername = ""
+            sameUsername = True
+            break
+        else:
+            sameUsername = False
+
+    if sameUsername:
+        return True
+    else:
+        return False
+    
+def create():
+    print("\n")
+    invalidUsername = True # Determines if user entered a name same to the person
+    invalidPw = True       # Determines if password has been entered
+
+    while invalidUsername:
+        username = ""
+        prevUsername = "" # Scans the previous
+
+        while True:
+            username = input("Enter your choses Papi-zza username: ") # Make account if the name does not match any previous usernames
+            if username == '':
+                pass
+            elif username.count(" ") > 0:
+                print("Your Papi-zza username must have no spaces.")
+            else:
+                break
+        
+        if checkUsername(username) == True: # Check if username has already been used
+                print("This Papi-zza username has already been used. Please choose another")
+                restart = True
+                invalidUsername = True
+
+        else:
+                invalidUsername = False
+                restart = False
+
+        if restart == True:
+            continue
+
+        while invalidPw:
+            password = input("Enter your password: ")
+            if password == "":
+                pass
+            else:
+                invalidPw = False
+
+        f = open(ACCOUNTS, "a")
+        f.write(f"\n{username}, {password}")
+        print("Accounts successfully created!")
+        f.close()
+    return True
+
+
+def login(): # Enters menu
+    f = open(ACCOUNTS, "r") # Open Accounts File
+    lines = f.readlines()
+    f.close()
+
+    password = ""
+    scanUsername = ""
+    invalidUsername = True
+
+    # Ask for username and password
+    while invalidUsername:
+        option1 = ""
+        username = input("\nEnter your username: ")
+        if checkUsername(username): # See if username has been registered
+            for line in lines:
+                scanUsername = line.split(",")
+                if scanUsername[0] == username:
+                    userPass = scanUsername[1].strip()
+                    invalidUsername = False
+
+        else: 
+            while True:
+                option1 = input("Username is not found. Enter your username again (y) or go back to menu(n)? ").lower()
+                if option1 == 'y':
+                    break
+                elif option1 == 'n':
+                    return False
+                
+    while password != userPass.strip(): #Get password after username is found
+        option2 = ""
+        password = input(f"Enter password for {username}: ").strip()
+        if password != userPass:
+            while True:
+                option2 = input("You entered the wrong password. Try again (y) or go back to menu (n)? ")
+                if option2 == 'y':
+                    break
+                elif option2 == 'n':
+                    return False
+        else:
+            print("Login Successful!")
+            return True
+
+def start_login_menu(): # Login menu
+    while True:
+        print("\n" + "=" * 60)
+        print("PAPI PEDRO'S PIZZERIA - ACCOUNT")
+        print("=" * 60)
+        print("1: Create your Papi-zza Account")
+        print("2: Login to your Papi-zza Account")
+        print("3: Exit")
+
+        option = ""
+        while option not in ("1", "2", "3"):
+            option = input("Please select an option: ").strip()
+
+        if option == "1":
+            if create():
+                print("Redirecting to the menu...")
+                time.sleep(2)
+                return True
+        elif option == "2":
+            if login():
+                print("Redirecting to the menu...")
+                time.sleep(2)
+                return True
+        else:
+            print("Thank you for visiting Papi Pedro's Pizzeria!")
+            time.sleep(2)
+            return False
 
 def to_non_negative_int(value, default=0):
     if isinstance(value, str):
@@ -21,7 +163,7 @@ def to_non_negative_int(value, default=0):
         return default
 
 
-def normalize_items(items):
+def normalize_items(items): # Items 
     normalized = []
     for item in items:
         raw_quantity = item.get("quantity")
@@ -60,15 +202,12 @@ def banner():
     print(
         """\n1. Show All Products
 \n2. Sales
-\n3. Add Products
-\n4. Remove Products
-\n5. Update Products
-\n6. Exit"""
+\n3. Exit"""
     )
     print("_" * 60)
 
 
-def display_all(items):
+def display_all(items): # Display all items of the food from the data.json
     categorized = {category: [] for category in CATEGORY_ORDER}
     for item in items:
         category = get_category(item)
@@ -83,7 +222,7 @@ def display_all(items):
             print(f"{item['id']:<5}{item['name']:<35}P {item['price']:>7.2f}")
 
 
-def get_category(item):
+def get_category(item): # Separate the food into Categories
     raw_category = str(item.get("category", "")).strip().lower()
     if raw_category in {"food", "soft drinks", "pasta", "desserts"}:
         return raw_category.title() if raw_category != "soft drinks" else "Soft Drinks"
@@ -98,7 +237,7 @@ def get_category(item):
     return "Food"
 
 
-def order_summary(products, amounts, total, quantities):
+def order_summary(products, amounts, total, quantities): # Summary of food, with checkout
     print("-" * 60)
     print("\t\tPAPI PEDROS PIZZERIA")
     print("-" * 60)
@@ -176,6 +315,27 @@ def parse_float(prompt):
             print("Please enter a valid number.")
 
 
+def display_current_order(requested_by_id, items): #Display all the current orders
+    print("\n" + "=" * 60)
+    print("CURRENT ORDER")
+    print("=" * 60)
+    print(f"{'ID':<5}{'Product':<30}{'Qty':>6}{'Amount':>15}")
+    running_total = 0.0
+
+    for item_id in sorted(requested_by_id):
+        qty = requested_by_id[item_id]
+        item = get_item_by_id(items, item_id)
+        if item is None:
+            continue
+        amount = item["price"] * qty
+        running_total += amount
+        print(f"{item_id:<5}{item['name']:<30}{qty:>6}  P {amount:>10.2f}")
+
+    print("-" * 60)
+    print(f"{'Subtotal':>45}: P {running_total:>10.2f}")
+    print("=" * 60)
+
+
 def run_sales(items):
     cart = []
     requested_by_id = {}
@@ -206,6 +366,7 @@ def run_sales(items):
             amount = item["price"] * quantity
             cart.append((item["name"], quantity, amount))
             total_bill += amount
+            display_current_order(requested_by_id, items)
 
     if not cart:
         print("No items ordered.")
@@ -221,11 +382,6 @@ def run_sales(items):
         print("Order cancelled.")
         return
 
-    for item_id, qty in requested_by_id.items():
-        item = get_item_by_id(items, item_id)
-        if item is not None:
-            item["quantity"] -= qty
-
     member = input("Do you have membership (Y/N): ").strip().upper()
     if member == "Y":
         total_bill *= 0.9
@@ -239,82 +395,9 @@ def run_sales(items):
 
     change = payment - total_bill
     generate_bill(total_bill, names, amounts, quantities, change, payment)
-    save_data(items)
     print(" ")
     print("Thank you for shopping with us :)")
-
-
-def add_product(items):
-    name = input("Enter item name: ").strip()
-    item_price = parse_float("Enter the price: ")
-    item_quantity = parse_quantity("Enter the quantity: ", min_value=0)
-    next_id = max((item["id"] for item in items), default=0) + 1
-
-    items.append(
-        {
-            "id": next_id,
-            "name": name,
-            "price": item_price,
-            "quantity": item_quantity,
-        }
-    )
-    save_data(items)
-    print("Item added.")
-
-
-def remove_product(items):
-    if not items:
-        print("No products to remove.")
-        return
-    display_all(items)
-    remove_id = parse_int("Enter item ID to remove: ")
-    item = get_item_by_id(items, remove_id)
-    if item is None:
-        print("Item not found.")
-        return
-
-    items.remove(item)
-    save_data(items)
-    print("Item removed.")
-
-
-def update_product(items):
-    if not items:
-        print("No products to update.")
-        return
-    display_all(items)
-    update_id = parse_int("Enter item ID to update: ")
-    item = get_item_by_id(items, update_id)
-    if item is None:
-        print("Item not found.")
-        return
-
-    new_name = input(f"Enter new name [{item['name']}]: ").strip()
-    new_price_raw = input(f"Enter new price [{item['price']}]: ").strip()
-    new_qty_raw = input(f"Enter new quantity [{item['quantity']}]: ").strip()
-
-    if new_name:
-        item["name"] = new_name
-    if new_price_raw:
-        try:
-            item["price"] = float(new_price_raw)
-        except ValueError:
-            print("Invalid price. Keeping old value.")
-    if new_qty_raw:
-        try:
-            parsed_qty = int(float(new_qty_raw.replace(",", "")))
-            if not float(new_qty_raw.replace(",", "")).is_integer():
-                raise ValueError
-            if parsed_qty < 0:
-                print("Invalid quantity. Keeping old value.")
-            else:
-                item["quantity"] = parsed_qty
-        except ValueError:
-            print("Invalid quantity. Keeping old value.")
-
-    save_data(items)
-    print("Item updated.")
-
+    sys.exit(0)
 
 def main():
     data = load_data()
@@ -329,12 +412,6 @@ def main():
         elif choice == 2:
             run_sales(items)
         elif choice == 3:
-            add_product(items)
-        elif choice == 4:
-            remove_product(items)
-        elif choice == 5:
-            update_product(items)
-        elif choice == 6:
             save_data(items)
             print("Thank you")
             sys.exit(0)
@@ -343,4 +420,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if start_login_menu():
+        main()
+    else:
+        sys.exit(0)
+
