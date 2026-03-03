@@ -1,0 +1,29 @@
+Pizzas
+1 , Margherita Pizza - P420
+2 , Pepperoni Pizza - P480
+3 , BBQ Chicken Pizza - P520
+4 , Hawaiian Pizza - P500
+5 , Veggie Delight Pizza - P450
+6 , Cheese Pizza - P390
+7 , Meat Lovers Pizza - P560
+8 , Buffalo Chicken Pizza - P530
+9 , Supreme Pizza - P580
+10 , Spinach Alfredo - P490
+
+Sides & Appetizers
+11 , Garlic Bread - P150
+12 , Cheese Sticks - P180
+13 , Chicken Wings (6 pcs) - P380
+14 , Mozzarella Bites - P200
+
+Salads
+15 , Caesar Salad - P250
+16 , Greek Salad - P260
+
+Beverages
+17 , Soft Drinks (Coke, 500ml) - P60
+18 , Iced Tea (500ml) - P55
+Pasta & Desserts
+
+19 , Spaghetti - P170
+20 , Tiramisu - P220

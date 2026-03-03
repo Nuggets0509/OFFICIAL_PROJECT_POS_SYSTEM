@@ -1,0 +1,144 @@
+{
+    "items": [
+        {
+            "id": 1,
+            "name": "Margherita Pizza",
+            "price": 420.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 2,
+            "name": "Pepperoni Pizza",
+            "price": 480.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 3,
+            "name": "BBQ Chicken Pizza",
+            "price": 520.0,
+            "quantity": -1,
+            "category": ""
+        },
+        {
+            "id": 4,
+            "name": "Hawaiian Pizza",
+            "price": 500.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 5,
+            "name": "Veggie Delight Pizza",
+            "price": 450.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 6,
+            "name": "Cheese Pizza",
+            "price": 390.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 7,
+            "name": "Meat Lovers Pizza",
+            "price": 560.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 8,
+            "name": "Buffalo Chicken Pizza",
+            "price": 530.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 9,
+            "name": "Supreme Pizza",
+            "price": 580.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 10,
+            "name": "Spinach Alfredo",
+            "price": 490.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 11,
+            "name": "Garlic Bread",
+            "price": 150.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 12,
+            "name": "Cheese Sticks",
+            "price": 180.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 13,
+            "name": "Chicken Wings (6 pcs)",
+            "price": 380.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 14,
+            "name": "Mozzarella Bites",
+            "price": 200.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 15,
+            "name": "Caesar Salad",
+            "price": 250.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 16,
+            "name": "Greek Salad",
+            "price": 260.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 17,
+            "name": "Coke (500ml)",
+            "price": 60.0,
+            "quantity": -2,
+            "category": ""
+        },
+        {
+            "id": 18,
+            "name": "Iced Tea (500ml)",
+            "price": 55.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 19,
+            "name": "Spaghetti",
+            "price": 170.0,
+            "quantity": 0,
+            "category": ""
+        },
+        {
+            "id": 20,
+            "name": "Tiramisu",
+            "price": 220.0,
+            "quantity": 0,
+            "category": ""
+        }
+    ]
+}
