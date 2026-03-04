@@ -336,6 +336,30 @@ def display_current_order(requested_by_id, items): #Display all the current orde
     print("=" * 60)
 
 
+
+def start_prep_timer(item_ids, items):
+    unique_ids = sorted(set(item_ids))
+    order_names = []
+
+    for item_id in unique_ids:
+        item = get_item_by_id(items, item_id)
+        if item is not None:
+            order_names.append(item["name"])
+
+    if order_names:
+        print("Preparing: " + ", ".join(order_names))
+    else:
+        print("Preparing your order...")
+
+    # Keep the wait short in CLI while still simulating kitchen prep.
+    prep_seconds = max(2, min(8, len(unique_ids) + 1))
+    for second in range(prep_seconds, 0, -1):
+        print(f"Estimated prep time: {second} second(s) remaining...", end="\r")
+        time.sleep(1)
+
+    print(" " * 70, end="\r")
+    print("Order is ready! Please claim at the counter.")
+
 def run_sales(items):
     cart = []
     requested_by_id = {}
@@ -432,4 +456,5 @@ if __name__ == "__main__":
         main()
     else:
         sys.exit(0)
+
 
