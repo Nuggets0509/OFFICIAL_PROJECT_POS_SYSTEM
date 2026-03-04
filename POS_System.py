@@ -394,7 +394,15 @@ def run_sales(items):
         break
 
     change = payment - total_bill
+    
     generate_bill(total_bill, names, amounts, quantities, change, payment)
+   
+    print("\nOrder confirmed! Sending your request to Papi's Kitchen...")
+    time.sleep(1)
+    
+    start_prep_timer(requested_by_id.keys(), items)
+    
+    
     print(" ")
     print("Thank you for shopping with us :)")
     sys.exit(0)
