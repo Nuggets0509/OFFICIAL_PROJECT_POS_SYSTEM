@@ -1,4 +1,4 @@
-import json
+﻿import json
 import random
 import sys
 import time
@@ -352,7 +352,7 @@ def start_prep_timer(item_ids, items):
         print("Preparing your order...")
 
     # Keep the wait short in CLI while still simulating kitchen prep.
-    prep_seconds = max(2, min(8, len(unique_ids) + 1))
+    prep_seconds = 10
     for second in range(prep_seconds, 0, -1):
         print(f"Estimated prep time: {second} second(s) remaining...", end="\r")
         time.sleep(1)
