@@ -2,23 +2,50 @@
 import random
 import sys
 import time
-import os
-import getpass
+import msvcrt
 from datetime import datetime
 from pathlib import Path
 
 # Get the folder where the script is located
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_DIR = Path(__file__).resolve().parent
 
 # Food menu
-DATA_FILE = Path("data.json")
+DATA_FILE = SCRIPT_DIR / "data.json"
 CATEGORY_ORDER = ["Food", "Soft Drinks", "Pasta", "Desserts"]
 
 # Builds accounts file path in the same folders as the script
-ACCOUNTS = os.path.join(SCRIPT_DIR, "accounts.txt")
+ACCOUNTS = SCRIPT_DIR / "accounts.txt"
 
 with open(ACCOUNTS, "a"):  # Create file if nonexistent
     pass
+
+
+def input_password(prompt):
+    print(prompt, end="", flush=True)
+    chars = []
+
+    while True:
+        key = msvcrt.getwch()
+
+        if key in ("\r", "\n"):
+            print()
+            return "".join(chars)
+
+        if key == "\003":
+            raise KeyboardInterrupt
+
+        if key == "\b":
+            if chars:
+                chars.pop()
+                print("\b \b", end="", flush=True)
+            continue
+
+        if key in ("\x00", "\xe0"):
+            msvcrt.getwch()
+            continue
+
+        chars.append(key)
+        print(".", end="", flush=True)
 
 def checkUsername(user):
     sameUsername = False
@@ -73,7 +100,7 @@ def create():
             continue
 
         while invalidPw:
-            password = getpass.getpass("Enter your password: ")
+            password = input_password("Enter your password: ")
             if password == "":
                 pass
             else:
@@ -115,7 +142,7 @@ def login(): # Enters menu
                 
     while password != userPass.strip(): #Get password after username is found
         option2 = ""
-        password = getpass.getpass(f"Enter password for {username}: ").strip()
+        password = input_password(f"Enter password for {username}: ").strip()
         if password != userPass:
             while True:
                 option2 = input("You entered the wrong password. Try again (y) or go back to menu (n)? ")
