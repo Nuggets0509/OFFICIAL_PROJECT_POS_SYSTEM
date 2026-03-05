@@ -3,6 +3,7 @@ import random
 import sys
 import time
 import os
+import getpass
 from datetime import datetime
 from pathlib import Path
 
@@ -72,7 +73,7 @@ def create():
             continue
 
         while invalidPw:
-            password = input("Enter your password: ")
+            password = getpass.getpass("Enter your password: ")
             if password == "":
                 pass
             else:
@@ -114,7 +115,7 @@ def login(): # Enters menu
                 
     while password != userPass.strip(): #Get password after username is found
         option2 = ""
-        password = input(f"Enter password for {username}: ").strip()
+        password = getpass.getpass(f"Enter password for {username}: ").strip()
         if password != userPass:
             while True:
                 option2 = input("You entered the wrong password. Try again (y) or go back to menu (n)? ")
@@ -204,9 +205,8 @@ def banner():
     print("\nWelcome to PAPI PEDROS PIZZERIA")
     print("_" * 60)
     print(
-        """\n1. Show All Products
-\n2. Sales
-\n3. Exit"""
+        """\n1. Menu
+\n2. Exit"""
     )
     print("_" * 60)
 
@@ -364,7 +364,7 @@ def start_prep_timer(item_ids, items):
     print(" " * 70, end="\r")
     print("Order is ready! Please claim at the counter.")
 
-def run_sales(items):
+def run_menu(items):
     cart = []
     requested_by_id = {}
     total_bill = 0.0
@@ -444,15 +444,13 @@ def main():
         choice = parse_int("Please enter your option: ")
 
         if choice == 1:
-            display_all(items)
+            run_menu(items)
         elif choice == 2:
-            run_sales(items)
-        elif choice == 3:
             save_data(items)
             print("Thank you")
             sys.exit(0)
         else:
-            print("Invalid choice. Please choose 1-6.")
+            print("Invalid choice. Please choose 1-2.")
 
 
 if __name__ == "__main__":
