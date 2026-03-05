@@ -16,6 +16,9 @@ CATEGORY_ORDER = ["Food", "Soft Drinks", "Pasta", "Desserts"]
 # Builds accounts file path in the same folders as the script
 ACCOUNTS = os.path.join(SCRIPT_DIR, "accounts.txt")
 
+with open(ACCOUNTS, "a"):  # Create file if nonexistent
+    pass
+
 def checkUsername(user):
     sameUsername = False
     with open(ACCOUNTS, "r") as f: # Open accounts file:
@@ -46,9 +49,11 @@ def create():
         prevUsername = "" # Scans the previous
 
         while True:
-            username = input("Enter your choses Papi-zza username: ") # Make account if the name does not match any previous usernames
+            username = input("Enter your choses Papi-zza username (Enter 0 to go back): ") # Make account if the name does not match any previous usernames
             if username == '':
                 pass
+            elif username == '0':
+                return False
             elif username.count(" ") > 0:
                 print("Your Papi-zza username must have no spaces.")
             else:
@@ -99,7 +104,6 @@ def login(): # Enters menu
                 if scanUsername[0] == username:
                     userPass = scanUsername[1].strip()
                     invalidUsername = False
-
         else: 
             while True:
                 option1 = input("Username is not found. Enter your username again (y) or go back to menu(n)? ").lower()
@@ -138,12 +142,12 @@ def start_login_menu(): # Login menu
         if option == "1":
             if create():
                 print("Redirecting to the menu...")
-                time.sleep(2)
+                time.sleep(1)
                 return True
         elif option == "2":
             if login():
                 print("Redirecting to the menu...")
-                time.sleep(2)
+                time.sleep(1)
                 return True
         else:
             print("Thank you for visiting Papi Pedro's Pizzeria!")
