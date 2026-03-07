@@ -397,10 +397,16 @@ def run_menu(items):
     total_bill = 0.0
 
     display_all(items)
-    print("Enter product IDs separated by comma (example: 1,2,3). Enter 0 to finish.")
 
     while True:
-        order_raw = input("What do you want to buy today? ").strip()
+        # Dynamically change the prompt based on whether the cart has items
+        if len(cart) == 0:
+            prompt_text = "What do you want to buy today? press 0 to go back: "
+        else:
+            prompt_text = "Enter product IDs separated by comma (example: 1,2,3). Enter 0 to checkout: "
+            
+        order_raw = input(prompt_text).strip()
+        
         if order_raw == "0":
             break
 
@@ -439,8 +445,12 @@ def run_menu(items):
 
     member = input("Do you have membership (Y/N): ").strip().upper()
     if member == "Y":
-        total_bill *= 0.9
-
+        total_bill *= 0.8
+    else:
+        discount = input ("Do you have a disability (Y/N): ").strip().upper()
+        if discount == "Y":
+            total_bill *= 0.8
+     
     while True:
         payment = parse_float("Amount Received: ")
         if payment < total_bill:
@@ -459,7 +469,7 @@ def run_menu(items):
     
     
     print(" ")
-    print("Thank you for shopping with us :)")
+    print("Thank you for ordering with us! We hope to see you again soon!")
     sys.exit(0)
 
 def main():
