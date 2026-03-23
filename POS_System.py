@@ -282,21 +282,49 @@ def order_summary(products, amounts, total, quantities): # Summary of food, with
     print(f"Total Payment Amount:\t\t\t\tP {total:.2f}")
 
 
-def generate_bill(total, products, amounts, quantities, change, amount_received):
+def generate_bill(total, names, amounts, quantities, change, payment):
+    print("\n" + "=" * 60)
+    print("PAPI PEDROS PIZZERIA")
+    print("=" * 60)
+    print(f"Receipt Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"{'Product':<30}{'Qty':>6}{'Amount':>15}")
     print("-" * 60)
-    print("\n\tPAPI PEDROS PIZZERIA")
-    print("-" * 60)
-    print(f"Bill:{int(random.random() * 100000)} \t\tDate:{datetime.now()}")
-    print(" ")
-    print("Product name\t\t\tQuantity\tPrice")
-    print("-" * 60)
-    for i in range(len(products)):
-        print(f"{products[i]}\t\t  {quantities[i]}\t\tP {amounts[i]:.2f}")
-    print("-" * 60)
-    print(f"Total Bill Amount:\t\t\t\tP {total:.2f}")
-    print(f"  Amount Received:\t\t\t\tP {amount_received:.2f}")
-    print(f"           Change:\t\t\t\tP {change:.2f}")
 
+    for name, qty, amount in zip(names, quantities, amounts):
+        print(f"{name:<30}{qty:>6}  P {amount:>10.2f}")
+
+    print("-" * 60)
+    print(f"{'Total':>45}: P {total:>10.2f}")
+    print(f"{'Payment':>45}: P {payment:>10.2f}")
+    print(f"{'Change':>45}: P {change:>10.2f}")
+    print("=" * 60)
+
+
+def process_payment(cart_items, total):
+    print(f"\nYour current total is: P {total:.2f}")
+    
+    discount = input("Apply 20% discount? (Member/PWD/Senior) (Y/N): ").strip().upper()
+    if discount == "Y":
+        total *= 0.8
+        print(f"Discount applied! New total: P {total:.2f}")
+
+    while True:
+        received = parse_float("Enter amount received: P ")
+        if received >= total:
+            break
+        print(f"Short by P {total - received:.2f}. Please pay the full amount.")
+
+    change = received - total
+    print("\n" + "="*30)
+    print(f"Payment Successful!")
+    print(f"Change: P {change:.2f}")
+    print("="*30)
+
+    names = [item[0] for item in cart_items]
+    qtys = [item[1] for item in cart_items]
+    prices = [item[2] for item in cart_items]
+    
+    generate_bill(total, names, prices, qtys, change, received)
 
 def get_item_by_id(items, item_id):
     for item in items:
