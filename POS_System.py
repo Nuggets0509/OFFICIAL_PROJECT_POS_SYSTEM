@@ -195,7 +195,7 @@ def to_non_negative_int(value, default=0):
         return default
 
 
-def normalize_items(items): # Items 
+def normalize_items(items):
     normalized = []
     for item in items:
         raw_quantity = item.get("quantity")
@@ -208,9 +208,35 @@ def normalize_items(items): # Items
                 "price": float(item.get("price", 0)),
                 "quantity": to_non_negative_int(raw_quantity),
                 "category": item.get("category", ""),
+                "prep_time": to_non_negative_int(item.get("prep_time", 5))
             }
         )
     return normalized
+
+def start_prep_timer(requested_ids, all_items):
+    import sys
+    import time
+    max_wait = 0
+    for item_id in requested_ids:
+        item = get_item_by_id(all_items, item_id)
+        if item and item.get("prep_time", 0) > max_wait:
+            max_wait = item["prep_time"]
+
+    print("\n" + "="*60)
+    print(">>> KITCHEN STATUS: FOOD IS BEING PREPARED <<<")
+    print("="*60)
+
+    for remaining in range(max_wait, 0, -1):
+        filled_length = int(30 * (max_wait - remaining) // max_wait)
+        bar = '█' * filled_length + '-' * (30 - filled_length)
+        sys.stdout.write(f"\rPrep Progress: |{bar}| {remaining}s left")
+        sys.stdout.flush()
+        time.sleep(1)
+
+    print("\n\n" + "*"*60)
+    print("STATUS: READY FOR PICK UP!")
+    print("Your order is hot and ready at the counter.")
+    print("*"*60 + "\n")
 
 
 def load_data():
