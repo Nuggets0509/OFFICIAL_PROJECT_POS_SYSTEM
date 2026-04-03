@@ -77,7 +77,7 @@ def create():
         prevUsername = "" # Scans the previous
 
         while True:
-            username = input("Enter your choses Papi-zza username (Enter 0 to go back): ") # Make account if the name does not match any previous usernames
+            username = input("Enter your chosen Papi-zza username (Enter 0 to go back): ") # Make account if the name does not match any previous usernames
             if username == '':
                 pass
             elif username == '0':
@@ -269,17 +269,22 @@ def get_category(item): # Separate the food into Categories
 
 
 def order_summary(products, amounts, total, quantities): # Summary of food, with checkout
+    name_width = 28
+    qty_width = 10
+    price_width = 12
+    divider = "-" * (name_width + qty_width + price_width)
+
     print("-" * 60)
     print("\t\tPAPI PEDROS PIZZERIA")
     print("-" * 60)
     print(f"Order Summary\t\tDate:{datetime.now()}")
     print(" ")
-    print("Product name\t\t\tQuantity\tPrice")
-    print("-" * 60)
+    print(f"{'Product name':<{name_width}}{'Quantity':>{qty_width}}{'Price':>{price_width}}")
+    print(divider)
     for i in range(len(products)):
-        print(f"{products[i]}\t\t  {quantities[i]}\t\tP {amounts[i]:.2f}")
-    print("-" * 60)
-    print(f"Total Payment Amount:\t\t\t\tP {total:.2f}")
+        print(f"{products[i]:<{name_width}}{quantities[i]:>{qty_width}}{'P ' + format(amounts[i], '.2f'):>{price_width}}")
+    print(divider)
+    print(f"{'Total Payment Amount:':<{name_width + qty_width}}{'P ' + format(total, '.2f'):>{price_width}}")
 
 
 def generate_bill(total, names, amounts, quantities, change, payment):
@@ -498,7 +503,7 @@ def run_menu(items):
     
     print(" ")
     print("Thank you for ordering with us! We hope to see you again soon!")
-    sys.exit(0)
+
 
 def main():
     data = load_data()
